@@ -50,6 +50,9 @@
       <UniqueIdentifier>{a733b7ed-c60b-481a-b5d2-841729f0bd9f}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="Srcs\ImGui">
+      <UniqueIdentifier>{a91871e7-6d6b-4bb4-a006-69637c39ee37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\changes.txt">
@@ -110,6 +113,12 @@
     </None>
     <None Include="..\..\Makefile">
       <Filter>Srcs</Filter>
+    </None>
+    <None Include="..\..\imgui\LICENSE">
+      <Filter>Srcs\ImGui</Filter>
+    </None>
+    <None Include="..\..\imgui\README.md">
+      <Filter>Srcs\ImGui</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -442,6 +451,18 @@
     </ClCompile>
     <ClCompile Include="..\..\debugger.c">
       <Filter>Srcs\Debugger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\imgui.cpp">
+      <Filter>Srcs\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\imgui_demo.cpp">
+      <Filter>Srcs\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\imgui_draw.cpp">
+      <Filter>Srcs\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\imgui_impl_a5.cpp">
+      <Filter>Srcs\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -804,6 +825,27 @@
     </ClInclude>
     <ClInclude Include="..\..\debugger.h">
       <Filter>Srcs\Debugger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\imconfig.h">
+      <Filter>Srcs\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\imgui.h">
+      <Filter>Srcs\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\imgui_impl_a5.h">
+      <Filter>Srcs\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\imgui_internal.h">
+      <Filter>Srcs\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\stb_rect_pack.h">
+      <Filter>Srcs\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\stb_textedit.h">
+      <Filter>Srcs\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\stb_truetype.h">
+      <Filter>Srcs\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

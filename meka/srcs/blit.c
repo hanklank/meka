@@ -27,6 +27,7 @@
 #include "palette.h"
 #include "vdp.h"
 #include "video.h"
+#include "imgui/imgui.h"
 
 //-----------------------------------------------------------------------------
 // Data
@@ -322,6 +323,7 @@ void    Blit_Fullscreen(void)
 		g_gui_status.timeleft --;
 	}
 
+    ImGui::Render();
 	al_flip_display();
 }
 
@@ -344,6 +346,8 @@ void    Blit_GUI(void)
 	al_set_target_bitmap(backbuffer);
 	al_draw_bitmap(gui_buffer, 0, 0, 0x0000);
 	PROFILE_STEP("al_draw_bitmap()");
+
+    ImGui::Render();
 
 	al_flip_display();
 	PROFILE_STEP("al_flip_display");

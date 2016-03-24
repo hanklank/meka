@@ -13,12 +13,14 @@
 #include "tvoekaki.h"
 #include "video.h"
 #include "vdp.h"
+#include "imgui/imgui_impl_a5.h"
+#include "imgui/imgui.h"
 
 // #define DEBUG_JOY
 
 float					g_keyboard_state[ALLEGRO_KEY_MAX];
 int						g_keyboard_modifiers = 0;
-ALLEGRO_EVENT_QUEUE *	g_keyboard_event_queue = NULL;
+ALLEGRO_EVENT_QUEUE *	g_input_event_queue = NULL;
 ALLEGRO_MOUSE_STATE		g_mouse_state;
 
 //-----------------------------------------------------------------------------
@@ -43,8 +45,9 @@ void	Inputs_Sources_Init()
 	for (int i = 0; i < ALLEGRO_KEY_MAX; i++)
 		g_keyboard_state[i] = -1.0f;
 	memset(&g_mouse_state, 0, sizeof(g_mouse_state));
-	g_keyboard_event_queue = al_create_event_queue();
-	al_register_event_source(g_keyboard_event_queue, al_get_keyboard_event_source());
+	g_input_event_queue = al_create_event_queue();
+	al_register_event_source(g_input_event_queue, al_get_keyboard_event_source());
+	al_register_event_source(g_input_event_queue, al_get_mouse_event_source());
 }
 
 t_input_src *       Inputs_Sources_Add(char *name)
@@ -311,36 +314,42 @@ void	Inputs_Sources_Update()
 			g_keyboard_state[i] += dt;
 
 	// Process keyboard events
-	ALLEGRO_EVENT key_event;
-	while (al_get_next_event(g_keyboard_event_queue, &key_event))
+	ALLEGRO_EVENT ev;
+	while (al_get_next_event(g_input_event_queue, &ev))
 	{
-		switch (key_event.type)
+        ImGui_ImplA5_ProcessEvent(&ev);
+
+		switch (ev.type)
 		{
 		case ALLEGRO_EVENT_KEY_DOWN:
 			//Msg(MSGT_DEBUG, "ALLEGRO_EVENT_KEY_DOWN %d", key_event.keyboard.keycode);
-			if (g_keyboard_state[key_event.keyboard.keycode] < 0.0f)
-				g_keyboard_state[key_event.keyboard.keycode] = 0.0f;
+			if (g_keyboard_state[ev.keyboard.keycode] < 0.0f)
+				g_keyboard_state[ev.keyboard.keycode] = 0.0f;
 			break;
 		case ALLEGRO_EVENT_KEY_UP:
 			//Msg(MSGT_DEBUG, "ALLEGRO_EVENT_KEY_UP %d", key_event.keyboard.keycode);
-			g_keyboard_state[key_event.keyboard.keycode] = -1.0f;
+			g_keyboard_state[ev.keyboard.keycode] = -1.0f;
 			break;
 		case ALLEGRO_EVENT_KEY_CHAR:
 			// Process 'character' keypresses
 			// Those are transformed (given keyboard state & locale) into printable character
 			// Equivalent to using ToUnicode() in the Win32 API.
 			// Note: Allegro is handling repeat for us here.
-			if (key_event.keyboard.unichar > 0 && (key_event.keyboard.unichar & ~0xFF) == 0)
+			if (ev.keyboard.unichar > 0 && (ev.keyboard.unichar & ~0xFF) == 0)
 			{
 				//Msg(MSGT_DEBUG, "%i %04x", key_event.keyboard.keycode, key_event.keyboard.unichar);
 				t_key_press* key_press = (t_key_press*)malloc(sizeof(*key_press));
-				key_press->scancode = key_event.keyboard.keycode;
-				key_press->ascii = key_event.keyboard.unichar & 0xFF;
+				key_press->scancode = ev.keyboard.keycode;
+				key_press->ascii = ev.keyboard.unichar & 0xFF;
 				list_add_to_end(&Inputs.KeyPressedQueue, key_press);
 			}
 			break;
 		}
 	}
+
+    ImGui_ImplA5_NewFrame();
+
+    ImGui::ShowTestWindow();
 	
 	// Allegro 5 doesn't receive PrintScreen under Windows because of the high-level API it is using.
 #ifdef ARCH_WIN32

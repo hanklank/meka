@@ -17,6 +17,7 @@
 #include "skin_fx.h"
 #include "vdp.h"
 #include "video.h"
+#include "imgui/imgui_impl_a5.h"
 
 //-----------------------------------------------------------------------------
 // Data
@@ -75,6 +76,8 @@ void Video_DestroyVideoBuffers()
     Data_DestroyVideoBuffers();
     Blit_DestroyVideoBuffers();
 	SkinFx_DestroyVideoBuffers();
+
+    ImGui_ImplA5_InvalidateDeviceObjects();
 }
 
 void Video_CreateVideoBuffers()
@@ -99,6 +102,8 @@ void Video_CreateVideoBuffers()
 	SkinFx_CreateVideoBuffers();
 	if (g_env.state == MEKA_STATE_GUI)
 		GUI_SetupNewVideoMode();
+
+    Imgui_ImplA5_CreateDeviceObjects();
 }
 
 static int Video_ChangeVideoMode(t_video_driver* driver, int w, int h, bool fullscreen, int refresh_rate, bool fatal)
@@ -167,6 +172,9 @@ static int Video_ChangeVideoMode(t_video_driver* driver, int w, int h, bool full
 
 	// Window title
     al_set_window_title(g_display, Msg_Get(MSG_Window_Title));
+
+    // Update ImGui Bindings context
+    ImGui_ImplA5_SetDisplay(g_display);
 
 	// Recreate all video buffers
 	Video_CreateVideoBuffers();
@@ -300,6 +308,7 @@ void    Video_Setup_State()
     case MEKA_STATE_SHUTDOWN:
         {
             Video_DestroyVideoBuffers();
+            ImGui_ImplA5_InvalidateDeviceObjects();
             if (g_display)
     			al_destroy_display(g_display);
 			g_display = NULL;

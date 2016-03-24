@@ -44,6 +44,8 @@
 #endif
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_ttf.h>
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_a5.h"
 
 //-----------------------------------------------------------------------------
 // Globals
@@ -352,6 +354,9 @@ int main(int argc, char **argv)
     g_env.argv[i] = NULL;
 
     // FIXME: add 'init system' here
+
+    // Setup ImGui binding
+    ImGui_ImplA5_Init(NULL);
 
     // Initializations
     g_env.state = MEKA_STATE_INIT;

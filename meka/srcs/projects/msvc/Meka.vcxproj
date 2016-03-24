@@ -218,6 +218,8 @@
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
+    <None Include="..\..\imgui\LICENSE" />
+    <None Include="..\..\imgui\README.md" />
     <None Include="..\..\Makefile" />
   </ItemGroup>
   <ItemGroup>
@@ -274,6 +276,22 @@
     <ClCompile Include="..\..\g_update.c" />
     <ClCompile Include="..\..\g_widget.c" />
     <ClCompile Include="..\..\hq2x.c" />
+    <ClCompile Include="..\..\imgui\imgui.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\imgui_demo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\imgui_draw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\imgui_impl_a5.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\..\inputs.c" />
     <ClCompile Include="..\..\inputs_c.c" />
     <ClCompile Include="..\..\inputs_f.c" />
@@ -399,6 +417,13 @@
     <ClInclude Include="..\..\g_update.h" />
     <ClInclude Include="..\..\g_widget.h" />
     <ClInclude Include="..\..\hq2x.h" />
+    <ClInclude Include="..\..\imgui\imconfig.h" />
+    <ClInclude Include="..\..\imgui\imgui.h" />
+    <ClInclude Include="..\..\imgui\imgui_impl_a5.h" />
+    <ClInclude Include="..\..\imgui\imgui_internal.h" />
+    <ClInclude Include="..\..\imgui\stb_rect_pack.h" />
+    <ClInclude Include="..\..\imgui\stb_textedit.h" />
+    <ClInclude Include="..\..\imgui\stb_truetype.h" />
     <ClInclude Include="..\..\inputs.h" />
     <ClInclude Include="..\..\inputs_c.h" />
     <ClInclude Include="..\..\inputs_f.h" />
