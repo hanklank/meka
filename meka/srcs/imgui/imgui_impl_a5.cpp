@@ -54,7 +54,11 @@ void ImGui_ImplA5_RenderDrawLists(ImDrawData* draw_data)
             v.pos = dv.pos;
             v.uv = dv.uv;
             unsigned char *c = (unsigned char*)&dv.col;
-            v.col = al_map_rgba(c[0], c[1], c[2], c[3]);
+            v.col.r = (float)c[0] / 255.0f;
+            v.col.g = (float)c[1] / 255.0f;
+            v.col.b = (float)c[2] / 255.0f;
+            v.col.a = (float)c[3] / 255.0f;
+            //v.col = al_map_rgba(c[0], c[1], c[2], c[3]);
             vertices[i] = v;
         }
 
@@ -90,8 +94,10 @@ void ImGui_ImplA5_RenderDrawLists(ImDrawData* draw_data)
 
 bool Imgui_ImplA5_CreateDeviceObjects()
 {
-    // Build texture atlas
     ImGuiIO &io = ImGui::GetIO();
+    io.Fonts->TexID = NULL;
+
+    // Build texture atlas
     unsigned char *pixels;
     int width, height;
     io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);
@@ -99,7 +105,7 @@ bool Imgui_ImplA5_CreateDeviceObjects()
     // Create texture
     int old_flags = al_get_new_bitmap_flags();
     int old_format = al_get_new_bitmap_format();
-    al_set_new_bitmap_flags(ALLEGRO_VIDEO_BITMAP|ALLEGRO_MIN_LINEAR|ALLEGRO_MAG_LINEAR);
+    al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
     al_set_new_bitmap_format(ALLEGRO_PIXEL_FORMAT_ANY_32_WITH_ALPHA);
     ALLEGRO_BITMAP* img = al_create_bitmap(width, height);
     al_set_new_bitmap_flags(old_flags);
@@ -107,18 +113,31 @@ bool Imgui_ImplA5_CreateDeviceObjects()
     if (!img) 
         return false;
 
-    ALLEGRO_LOCKED_REGION *locked_img = al_lock_bitmap(img, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
+    ALLEGRO_LOCKED_REGION *locked_img = al_lock_bitmap(img, ALLEGRO_PIXEL_FORMAT_ANY_32_WITH_ALPHA, ALLEGRO_LOCK_WRITEONLY);
     if (!locked_img) 
     {
         al_destroy_bitmap(img);
         return false;
     }
-    memcpy(locked_img->data, pixels, sizeof(int)*width*height);
+    memcpy(locked_img->data, pixels, 3*width*height);
     al_unlock_bitmap(img);
 
+    // Convert software texture to hardware texture.
+#if 1
+    al_set_new_bitmap_flags(ALLEGRO_VIDEO_BITMAP);//|ALLEGRO_MIN_LINEAR|ALLEGRO_MAG_LINEAR);
+    al_set_new_bitmap_format(ALLEGRO_PIXEL_FORMAT_ANY_32_WITH_ALPHA);
+    ALLEGRO_BITMAP* cloned_img = al_clone_bitmap(img);
+    al_destroy_bitmap(img);
+    if (!cloned_img) 
+        return false;
+
     // Store our identifier
+    io.Fonts->TexID = (void*)cloned_img;
+    g_Texture = cloned_img;
+#else
     io.Fonts->TexID = (void*)img;
     g_Texture = img;
+#endif
 
     // Create an invisible mouse cursor
     // Because al_hide_mouse_cursor() seems to mess up with the actual inputs..

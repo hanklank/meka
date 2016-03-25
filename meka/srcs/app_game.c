@@ -99,22 +99,20 @@ void	gamebox_resize_all()
     gui.info.must_redraw = TRUE;
 }
 
+const char*   gamebox_get_name()
+{
+	if (DB.current_entry)
+        return DB_Entry_GetCurrentName(DB.current_entry);
+
+    if (g_machine_flags & MACHINE_CART_INSERTED)
+        return Msg_Get(MSG_DB_Name_Default);
+    else
+        return Msg_Get(MSG_DB_Name_NoCartridge);
+}
+
 void	gamebox_rename_all()
 {
-    const char *new_name;
-    
-	if (DB.current_entry)
-	{
-        new_name = DB_Entry_GetCurrentName(DB.current_entry);
-	}
-    else
-    {
-        if (g_machine_flags & MACHINE_CART_INSERTED)
-            new_name = Msg_Get(MSG_DB_Name_Default);
-        else
-            new_name = Msg_Get(MSG_DB_Name_NoCartridge);
-    }
-
+    const char *new_name = gamebox_get_name();
     for (t_list* boxes = gui.boxes; boxes != NULL; boxes = boxes->next)
     {
         t_gui_box* box = (t_gui_box*)boxes->elem;

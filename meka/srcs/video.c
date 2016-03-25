@@ -18,6 +18,7 @@
 #include "vdp.h"
 #include "video.h"
 #include "imgui/imgui_impl_a5.h"
+#include "newgui.h"
 
 //-----------------------------------------------------------------------------
 // Data
@@ -446,6 +447,8 @@ void    Video_RefreshScreen(void)
 
             gui_draw();
 			PROFILE_STEP("gui_draw()");
+
+            NewGui_Draw();
 
 			Blit_GUI();
 			PROFILE_STEP("Blit_GUI()");

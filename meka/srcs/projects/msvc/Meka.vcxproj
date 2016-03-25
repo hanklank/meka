@@ -309,6 +309,7 @@
     <ClCompile Include="..\..\meka.c" />
     <ClCompile Include="..\..\message.c" />
     <ClCompile Include="..\..\misc.c" />
+    <ClCompile Include="..\..\newgui.cpp" />
     <ClCompile Include="..\..\palette.c" />
     <ClCompile Include="..\..\patch.c" />
     <ClCompile Include="..\..\periph.c" />
@@ -441,6 +442,7 @@
     <ClInclude Include="..\..\meka.h" />
     <ClInclude Include="..\..\message.h" />
     <ClInclude Include="..\..\misc.h" />
+    <ClInclude Include="..\..\newgui.h" />
     <ClInclude Include="..\..\palette.h" />
     <ClInclude Include="..\..\patch.h" />
     <ClInclude Include="..\..\periph.h" />

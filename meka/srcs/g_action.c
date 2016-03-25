@@ -24,7 +24,7 @@ void    Action_Quit()
     Sound_Playback_Stop();
 
     // Redraw last time, so message appears on screen
-    gui_redraw_everything_now_once();
+    //gui_redraw_everything_now_once();
 
     /*
     // Software, naive, slow fade

@@ -464,6 +464,9 @@
     <ClCompile Include="..\..\imgui\imgui_impl_a5.cpp">
       <Filter>Srcs\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\newgui.cpp">
+      <Filter>Srcs\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\allegro4to5.h">
@@ -846,6 +849,9 @@
     </ClInclude>
     <ClInclude Include="..\..\imgui\stb_truetype.h">
       <Filter>Srcs\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\newgui.h">
+      <Filter>Srcs\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

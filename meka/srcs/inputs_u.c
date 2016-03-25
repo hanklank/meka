@@ -348,45 +348,62 @@ void	Inputs_Sources_Update()
 	}
 
     ImGui_ImplA5_NewFrame();
-
-    ImGui::ShowTestWindow();
 	
-	// Allegro 5 doesn't receive PrintScreen under Windows because of the high-level API it is using.
-#ifdef ARCH_WIN32
-	if (GetAsyncKeyState(VK_SNAPSHOT))
-		g_keyboard_state[ALLEGRO_KEY_PRINTSCREEN] = g_keyboard_state[ALLEGRO_KEY_PRINTSCREEN] < 0.0f ? 0.0f : g_keyboard_state[ALLEGRO_KEY_PRINTSCREEN] + dt;
-	else
-		g_keyboard_state[ALLEGRO_KEY_PRINTSCREEN] = -1.0f;
-	// g_keyboard_state.__key_down__internal__[ALLEGRO_KEY_PRINTSCREEN/32] |= (1 << (ALLEGRO_KEY_PRINTSCREEN & 31));
-#endif
+    if (ImGui::GetIO().WantCaptureKeyboard)
+    {
+        // ImGui is using keyboard inputs
+        g_keyboard_modifiers = 0;
+        for (int n = 0; n < ARRAYSIZE(g_keyboard_state); n++)
+            g_keyboard_state[n] = -1.0f;
+    }
+    else
+    {
+	    // Allegro 5 doesn't receive PrintScreen under Windows because of the high-level API it is using.
+    #ifdef ARCH_WIN32
+	    if (GetAsyncKeyState(VK_SNAPSHOT))
+		    g_keyboard_state[ALLEGRO_KEY_PRINTSCREEN] = g_keyboard_state[ALLEGRO_KEY_PRINTSCREEN] < 0.0f ? 0.0f : g_keyboard_state[ALLEGRO_KEY_PRINTSCREEN] + dt;
+	    else
+		    g_keyboard_state[ALLEGRO_KEY_PRINTSCREEN] = -1.0f;
+	    // g_keyboard_state.__key_down__internal__[ALLEGRO_KEY_PRINTSCREEN/32] |= (1 << (ALLEGRO_KEY_PRINTSCREEN & 31));
+    #endif
 
-	// Update keyboard modifiers flags
-	g_keyboard_modifiers = 0;
-	if (Inputs_KeyDown(ALLEGRO_KEY_LCTRL) || Inputs_KeyDown(ALLEGRO_KEY_RCTRL))
-		g_keyboard_modifiers |= ALLEGRO_KEYMOD_CTRL;
-	if (Inputs_KeyDown(ALLEGRO_KEY_ALT) || Inputs_KeyDown(ALLEGRO_KEY_ALTGR))
-		g_keyboard_modifiers |= ALLEGRO_KEYMOD_ALT;
-	if (Inputs_KeyDown(ALLEGRO_KEY_LSHIFT) || Inputs_KeyDown(ALLEGRO_KEY_RSHIFT))
-		g_keyboard_modifiers |= ALLEGRO_KEYMOD_SHIFT;
+	    // Update keyboard modifiers flags
+	    g_keyboard_modifiers = 0;
+	    if (Inputs_KeyDown(ALLEGRO_KEY_LCTRL) || Inputs_KeyDown(ALLEGRO_KEY_RCTRL))
+		    g_keyboard_modifiers |= ALLEGRO_KEYMOD_CTRL;
+	    if (Inputs_KeyDown(ALLEGRO_KEY_ALT) || Inputs_KeyDown(ALLEGRO_KEY_ALTGR))
+		    g_keyboard_modifiers |= ALLEGRO_KEYMOD_ALT;
+	    if (Inputs_KeyDown(ALLEGRO_KEY_LSHIFT) || Inputs_KeyDown(ALLEGRO_KEY_RSHIFT))
+		    g_keyboard_modifiers |= ALLEGRO_KEYMOD_SHIFT;
 
-	// Keyboard debugging
-#if 0
-	u8 win32_keyboard_state[256];
-	memset(&win32_keyboard_state[0], 0, sizeof(win32_keyboard_state));
-	bool ret = GetKeyboardState(&win32_keyboard_state[0]);
-	for (int i = 0; i != 256; i++)
-		if (win32_keyboard_state[i])
-			Msg(MSGT_DEBUG, "[%d Win32 pressed %d\n", ret, i);
-		//if (GetAsyncKeyState(i))
-		//	Msg( MSGT_DEBUG, "[%d] Win32 Pressed key %d, %08x", ret, i, GetAsyncKeyState(i));
+	    // Keyboard debugging
+    #if 0
+	    u8 win32_keyboard_state[256];
+	    memset(&win32_keyboard_state[0], 0, sizeof(win32_keyboard_state));
+	    bool ret = GetKeyboardState(&win32_keyboard_state[0]);
+	    for (int i = 0; i != 256; i++)
+		    if (win32_keyboard_state[i])
+			    Msg(MSGT_DEBUG, "[%d Win32 pressed %d\n", ret, i);
+		    //if (GetAsyncKeyState(i))
+		    //	Msg( MSGT_DEBUG, "[%d] Win32 Pressed key %d, %08x", ret, i, GetAsyncKeyState(i));
 
-	//for (int i = 0; i != ALLEGRO_KEY_MAX; i++)
-	//	if (al_key_down(&g_keyboard_state, i))
-	//		Msg( MSGT_DEBUG, "Pressed key %d", i);
-#endif
+	    //for (int i = 0; i != ALLEGRO_KEY_MAX; i++)
+	    //	if (al_key_down(&g_keyboard_state, i))
+	    //		Msg( MSGT_DEBUG, "Pressed key %d", i);
+    #endif
+    }
 
     // Poll mouse
 	al_get_mouse_state(&g_mouse_state);
+
+    if (ImGui::GetIO().WantCaptureMouse)
+    {
+        // ImGui is using mouse inputs
+        g_mouse_state.buttons = 0;
+    }
+
+        ImGui::ShowTestWindow();
+
 
 	// FIXME-ALLEGRO5: Used to be provided by Allegro 4 as mouse_mx, mouse_my (mickeys?) - check SVN log
 	//int screen_center_x, screen_center_y;

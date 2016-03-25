@@ -181,7 +181,7 @@ static void Init_Default_Values()
 	g_configuration.video_driver					= g_video_driver_default;
 	g_configuration.video_fullscreen				= false;
 	g_configuration.video_game_format_request		= ALLEGRO_PIXEL_FORMAT_ANY_16_NO_ALPHA;
-	g_configuration.video_gui_format_request		= ALLEGRO_PIXEL_FORMAT_ANY_NO_ALPHA;
+	g_configuration.video_gui_format_request		= ALLEGRO_PIXEL_FORMAT_ANY_32_NO_ALPHA;//ALLEGRO_PIXEL_FORMAT_ANY_NO_ALPHA;
 
 	g_configuration.video_mode_game_vsync			= false;
     g_configuration.video_mode_gui_res_x			= 1024;
